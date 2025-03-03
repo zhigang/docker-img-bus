@@ -32,15 +32,21 @@ jobs:
             
             echo "Processing image: $line"
             
+            # 提取标签，如果没有标签则使用latest
+            if [[ $line == *":"* ]]; then
+              TAG=$(echo $line | cut -d ':' -f 2)
+            else
+              TAG="latest"
+            fi
+            
             # 拉取原始镜像
             docker pull $line
             
-            # 提取镜像源地址、名称和标签
-            if [[ $line =~ ^([^/]+)/(.+):(.+)$ ]]; then
+            # 提取镜像源地址和名称
+            if [[ $line =~ ^([^/]+)/(.+)$ ]]; then
               # 处理带有源地址的镜像，如 k8s.gcr.io/ingress-nginx/controller:v1.12.0
               REGISTRY=${BASH_REMATCH[1]}
               IMAGE_PATH=${BASH_REMATCH[2]}
-              TAG=${BASH_REMATCH[3]}
               
               # 检查是否包含源地址（如 docker.elastic.co）
               if [[ $REGISTRY == *"."* ]]; then
@@ -61,12 +67,11 @@ jobs:
               FORMATTED_NAME=$(echo $FORMATTED_NAME | tr '/' '-' | tr '.' '-')
             else
               # 处理普通格式的镜像，如 nginx:1.27.4
-              IMAGE_NAME=$(echo $line | cut -d ':' -f 1)
-              TAG=$(echo $line | cut -d ':' -f 2)
+              IMAGE_NAME=$line
               
-              # 如果没有标签，使用latest
-              if [ -z "$TAG" ]; then
-                TAG="latest"
+              # 如果有标签，移除标签部分
+              if [[ $IMAGE_NAME == *":"* ]]; then
+                IMAGE_NAME=$(echo $IMAGE_NAME | cut -d ':' -f 1)
               fi
               
               # 检查命名空间是否与镜像名相同
