@@ -1,0 +1,31 @@
+# Docker 镜像列表
+# 请在下方填写需要的Docker镜像，每行一个
+# 支持以下格式：
+# 1. Docker Hub 镜像：镜像名称:标签
+#    示例：nginx:1.27.4
+#    示例：mysql:8.0
+# 2. 其他镜像仓库：仓库地址/镜像路径:标签
+#    示例：k8s.gcr.io/ingress-nginx/controller:v1.12.0
+
+# 在此处添加您需要的镜像
+nginx:latest
+postgres:15-alpine
+redis:6-alpine
+ubuntu/squid
+# ingress-nginx
+k8s.gcr.io/ingress-nginx/controller:v1.12.0
+kong/kubernetes-ingress-controller:3.4.3
+# Dify
+langgenius/dify-api:0.15.3
+langgenius/dify-web:0.15.3
+langgenius/dify-sandbox:0.2.10
+langgenius/dify-plugin-daemon:0.0.2-local
+langgenius/qdrant:v1.7.3
+semitechnologies/weaviate:1.19.0
+pgvector/pgvector:pg16
+tensorchord/pgvecto-rs:pg16-v0.3.0
+minio/minio:RELEASE.2023-03-20T20-16-18Z
+milvusdb/milvus:v2.5.0-beta
+opensearchproject/opensearch:latest
+opensearchproject/opensearch-dashboards:latest
+myscale/myscaledb:1.6.4
