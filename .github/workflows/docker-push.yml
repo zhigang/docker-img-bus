@@ -58,26 +58,19 @@ jobs:
                 # 没有源地址，保留完整路径
                 FORMATTED_NAME="${REGISTRY}-${IMAGE_PATH}"
               fi
-              
-              # 检查命名空间是否与镜像名相同
-              if [[ $FORMATTED_NAME =~ ^([^/]+)/\1(/|$) ]]; then
-                # 如果相同，只保留一个
-                FORMATTED_NAME=${BASH_REMATCH[1]}
-              fi
-              
-              # 替换斜杠和点号为连字符
-              FORMATTED_NAME=$(echo $FORMATTED_NAME | tr '/' '-' | tr '.' '-')
             else
               # 处理普通格式的镜像，如 nginx
-              # 检查命名空间是否与镜像名相同
-              if [[ $IMAGE_NAME =~ ^([^/]+)/\1$ ]]; then
-                # 如果相同，只保留一个
-                FORMATTED_NAME=${BASH_REMATCH[1]}
-              else
-                # 处理包含斜杠的镜像名称，将斜杠替换为连字符
-                FORMATTED_NAME=$(echo $IMAGE_NAME | tr '/' '-')
-              fi
+              FORMATTED_NAME=$IMAGE_NAME
             fi
+            
+            # 替换斜杠和点号为连字符
+            FORMATTED_NAME=$(echo $FORMATTED_NAME | tr '/' '-' | tr '.' '-')
+            
+            # 统一处理命名空间重复的情况
+            # 如果格式化后的名称中存在相同的部分（如 xxx-xxx），则只保留一个
+            while [[ $FORMATTED_NAME =~ ([^-]+)-\1(-|$) ]]; do
+              FORMATTED_NAME=${FORMATTED_NAME/${BASH_REMATCH[0]}/${BASH_REMATCH[1]}${BASH_REMATCH[2]}}
+            done
             
             # 重新标记为阿里云镜像
             TARGET_IMAGE="registry.cn-shanghai.aliyuncs.com/siriuszg/${FORMATTED_NAME}:${TAG}"
