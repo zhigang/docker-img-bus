@@ -79,4 +79,8 @@ jobs:
             # 推送到阿里云
             echo "Pushing to: $TARGET_IMAGE"
             docker push $TARGET_IMAGE
+
+            # 推送后删除镜像
+            docker image rm $TARGET_IMAGE
+            docker image rm $line
           done < images.txt
