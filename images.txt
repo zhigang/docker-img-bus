@@ -8,6 +8,7 @@
 #    示例：k8s.gcr.io/ingress-nginx/controller:v1.12.0
 
 # 在此处添加您需要的镜像
+siriuszg/toolbox:master
 nginx:latest
 postgres:15-alpine
 redis:6-alpine
