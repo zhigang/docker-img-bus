@@ -17,7 +17,7 @@ jobs:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v2
         with:
-          registry: registry.cn-shanghai.aliyuncs.com
+          registry: registry.cn-beijing.aliyuncs.com
           username: ${{ secrets.ALIYUN_USERNAME }}
           password: ${{ secrets.ALIYUN_PASSWORD }}
 
@@ -73,7 +73,7 @@ jobs:
             done
             
             # 重新标记为阿里云镜像
-            TARGET_IMAGE="registry.cn-shanghai.aliyuncs.com/siriuszg/${FORMATTED_NAME}:${TAG}"
+            TARGET_IMAGE="registry.cn-beijing.aliyuncs.com/siriuszg/${FORMATTED_NAME}:${TAG}"
             docker tag $line $TARGET_IMAGE
             
             # 推送到阿里云
